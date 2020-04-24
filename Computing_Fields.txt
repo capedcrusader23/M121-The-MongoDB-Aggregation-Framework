@@ -1,0 +1,10 @@
+Using the Aggregation Framework, find a count of the number of movies that have a title composed of one word. To clarify, "Cinderella" and "3-25" should count, where as "Cast Away" would not.
+
+
+The idea here is to first use project aggregation operator to find size of all the titles.
+Step:1 Find the size of all the title.Here we have to use $size and $split operator.
+$Size is use to find size of field(must be array).Using split will convert the title of document into string by taking  delimiter " ".
+db.movies.aggregate([ {$project:{abc:{$size:{$split:["$title"," "]}  }}     }])
+
+Step:2 Now we will use match operator to find the which of the entries returned by project operator have size 1.By using itcount() we can count entries.
+db.movies.aggregate([ {$project:{abc:{$size:{$split:["$title"," "]}  }}     },{$match:{abc:1}}]).itcount()
